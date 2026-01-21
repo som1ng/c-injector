@@ -1,0 +1,24 @@
+# --- 编译产出 (bin目录下的内容通常不提交，除了占位符) ---
+bin/*.exe
+bin/*.pdb
+bin/*.ilk
+bin/*.exp
+
+# --- Visual Studio 产生的中间文件 ---
+*.obj
+*.o
+*.lib
+*.tlog
+*.log
+*.idb
+*.ipdb
+
+# --- 临时目录 ---
+.vs/
+x64/
+Debug/
+Release/
+
+# --- VS Code 缓存 ---
+.vscode/ipch/
+.vscode/*.db

@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build GUI Injector",
+            "type": "shell",
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": ["/d", "/c"]
+                }
+            },
+            "command": "g++",
+            "args": [
+                "-g",
+                "-std=c++17",
+                "-fexec-charset=GBK",
+                "-DUNICODE",
+                "-D_UNICODE",
+                
+                // 确保这里指向的是包含 wWinMain 的那个文件
+                // 如果你的 GUI 代码在 main.cpp，就保留 main.cpp
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/utils.cpp",
+                "${workspaceFolder}/src/methods/method_crt.cpp",
+                
+                "-o",
+                "${workspaceFolder}/bin/Injector.exe",
+                
+                // [关键修改 1] 静态链接，解决双击没反应的问题
+                "-static",
+                
+                // [关键修改 2] 暂时注释掉 -mwindows，让我们能看到报错
+                // "-mwindows",
+                
+                // 必须保留，因为你用的是 wWinMain
+                "-municode", 
+
+                "-lcomdlg32",
+                "-lkernel32",
+                "-luser32",
+                "-lcomctl32",
+                "-lgdi32"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "调试模式：带黑框 + 静态链接"
+        }
+    ]
+}
