@@ -30,7 +30,6 @@ namespace methods {
             CloseHandle(hProcess);
             return false;
         }
-
         // 3. 写入 DLL 路径
         if (!WriteProcessMemory(hProcess, pRemoteMem, dllPath.c_str(), pathSize, NULL)) {
             std::cerr << "[-] WriteProcessMemory 失败!" << std::endl;
@@ -38,7 +37,6 @@ namespace methods {
             CloseHandle(hProcess);
             return false;
         }
-
         // 4. 获取 LoadLibraryW 的地址 (kernel32.dll 在所有进程里的基址通常是一样的)
         HMODULE hKernel32 = GetModuleHandleW(L"kernel32.dll");
         LPTHREAD_START_ROUTINE pLoadLibrary = (LPTHREAD_START_ROUTINE)GetProcAddress(hKernel32, "LoadLibraryW");
