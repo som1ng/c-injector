@@ -2,15 +2,31 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build GUI Injector",
+            "label": "Build All (x64 & x86)",
+            "dependsOn": [
+                "Build Injector (x64)",
+                "Build Injector (x86)"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "同时编译 64位 和 32位 版本"
+        },
+        {
+            "label": "Build Injector (x64)",
             "type": "shell",
             "options": {
                 "shell": {
                     "executable": "cmd.exe",
-                    "args": ["/d", "/c"]
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
                 }
             },
-            "command": "g++",
+            // [修改] 使用明确的 64位 编译器路径
+            "command": "C:\\vscode environment\\mingw64\\bin\\g++.exe",
             "args": [
                 "-g",
                 "-std=c++17",
@@ -18,8 +34,6 @@
                 "-DUNICODE",
                 "-D_UNICODE",
                 "-municode",
-                
-                // 源文件列表
                 "${workspaceFolder}/src/main_gui.cpp",
                 "${workspaceFolder}/src/utils.cpp",
                 "${workspaceFolder}/src/methods/method_crt.cpp",
@@ -27,27 +41,68 @@
                 "${workspaceFolder}/src/methods/method_hook.cpp",
                 "${workspaceFolder}/src/methods/method_reflective.cpp",
                 "${workspaceFolder}/src/methods/method_hijack.cpp",
-                
                 "-o",
-                "${workspaceFolder}/bin/Injector.exe",
-                
+                "${workspaceFolder}/bin/Injector_x64.exe",
                 "-static",
-                // "-mwindows", // 暂时注释掉，方便调试
-                
-                // --- 依赖库 ---
+                "-mwindows",
                 "-lcomdlg32",
                 "-lkernel32",
                 "-luser32",
                 "-lcomctl32",
                 "-lgdi32",
-                "-lshlwapi" // [新增] 修复 PathRemoveFileSpecW 报错的关键库
+                "-lshlwapi"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "生成 64 位版本"
+        },
+        {
+            "label": "Build Injector (x86)",
+            "type": "shell",
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
             },
-            "problemMatcher": ["$gcc"],
-            "detail": "编译包含所有5种注入方法的完整版"
+            // [修改] 使用明确的 32位 编译器路径
+            "command": "C:\\vscode environment\\mingw32\\bin\\g++.exe",
+            "args": [
+                // "-m32", // 既然指定了专门的32位编译器，这个参数通常可以省略，也可以留着作为双重保险
+                "-g",
+                "-std=c++17",
+                "-fexec-charset=GBK",
+                "-DUNICODE",
+                "-D_UNICODE",
+                "-municode",
+                "${workspaceFolder}/src/main_gui.cpp",
+                "${workspaceFolder}/src/utils.cpp",
+                "${workspaceFolder}/src/methods/method_crt.cpp",
+                "${workspaceFolder}/src/methods/method_apc.cpp",
+                "${workspaceFolder}/src/methods/method_hook.cpp",
+                "${workspaceFolder}/src/methods/method_reflective.cpp",
+                "${workspaceFolder}/src/methods/method_hijack.cpp",
+                "-o",
+                "${workspaceFolder}/bin/Injector_x86.exe",
+                "-static",
+                "-mwindows",
+                "-lcomdlg32",
+                "-lkernel32",
+                "-luser32",
+                "-lcomctl32",
+                "-lgdi32",
+                "-lshlwapi"
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "生成 32 位版本"
         }
     ]
 }
