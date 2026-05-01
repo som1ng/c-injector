@@ -1,4 +1,7 @@
 # c-injector
+[![License](https://img.shields.io/github/license/som1ng/c-injector)](./LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/som1ng/c-injector.svg)](https://github.com/som1ng/c-injector/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/som1ng/c-injector.svg)](https://github.com/som1ng/c-injector/issues)
 
 基于 C++ 的 Windows DLL 注入与 Shellcode 注入工具，支持多种注入技术，便于安全测试、逆向分析与自动化开发。项目包含 GUI 及丰富的注释与源代码结构，适合学习与实际运用。
 
