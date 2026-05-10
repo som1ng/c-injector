@@ -33,7 +33,8 @@ enum MethodID {
     M_APC = 1,
     M_HOOK = 2,
     M_REFLECTIVE = 3,
-    M_HIJACK = 4
+    M_HIJACK = 4,
+    M_SYSCALL = 5
 };
 
 HWND hListProcess, hEditFile, hRadioDll, hRadioBin, hComboMethod, hLabelTip;
@@ -114,6 +115,14 @@ void UpdateMethodCombo(bool isDll) {
         // 5. Hijack
         idx = SendMessage(hComboMethod, CB_ADDSTRING, 0, (LPARAM)L"5. DLL Hijacking (劫持)");
         SendMessage(hComboMethod, CB_SETITEMDATA, idx, M_HIJACK);
+
+        // 6. Direct Syscall (最高隐蔽性，绕过 ETW/API Hook)
+        idx = SendMessage(hComboMethod, CB_ADDSTRING, 0, (LPARAM)L"6. Direct Syscall (内联汇编 bypass)");
+        SendMessage(hComboMethod, CB_SETITEMDATA, idx, M_SYSCALL);
+    } else {
+        // Shellcode 模式也支持 Syscall
+        idx = SendMessage(hComboMethod, CB_ADDSTRING, 0, (LPARAM)L"3. Direct Syscall (内联汇编 bypass)");
+        SendMessage(hComboMethod, CB_SETITEMDATA, idx, M_SYSCALL);
     }
 
     // 默认选中第一个
@@ -205,7 +214,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                             result = methods::Inject_Reflective(pid, rawData);
                         }
                         break;
-                    case M_HIJACK: 
+                    case M_HIJACK:
                         // [修复] 获取目标 EXE 完整路径，传给劫持部署函数
                         {
                             std::wstring targetPath = GetProcessPath(pid);
@@ -215,6 +224,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                             }
                             result = methods::Deploy_Hijack(targetPath, inputStr);
                         }
+                        break;
+                    case M_SYSCALL:
+                        result = methods::Inject_Syscall_DLL(pid, inputStr);
                         break;
                     default: MessageBox(hwnd, L"未知方法 ID", L"Err", MB_OK); break;
                 }
@@ -236,6 +248,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                 switch (methodID) {
                     case M_CRT: result = methods::Inject_CRT_Shellcode(pid, rawData); break;
                     case M_APC: result = methods::Inject_APC_Shellcode(pid, rawData); break;
+                    case M_SYSCALL: result = methods::Inject_Syscall_Shellcode(pid, rawData); break;
                     default: MessageBox(hwnd, L"该方法不支持 Shellcode 模式", L"错误", MB_OK); break;
                 }
             }

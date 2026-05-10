@@ -24,7 +24,11 @@ namespace methods {
     // 4. Reflective Injection (实现在 method_reflective.cpp)
     bool Inject_Reflective(DWORD pid, const std::vector<unsigned char>& code);
 
-    // 5. DLL Hijacking (实现在 method_hijack.cpp - 如果以后要用的话)
-    // 目前 main_gui.cpp 还没调用这个，暂时可以注释掉或者只声明
+    // 5. DLL Hijacking (实现在 method_hijack.cpp)
     bool Deploy_Hijack(const std::wstring& targetExeDir, const std::wstring& myDllPath);
+
+    // 6. Direct Syscall Injection (实现在 method_syscall.cpp)
+    // 使用内联汇编直接发起 syscall，绕过 ETW / API Hook / 用户态事件追踪
+    bool Inject_Syscall_DLL(DWORD pid, const std::wstring& dllPath);
+    bool Inject_Syscall_Shellcode(DWORD pid, const std::vector<unsigned char>& shellcode);
 }
