@@ -1,13 +1,20 @@
-# c-injector
-[![License](https://img.shields.io/github/license/som1ng/c-injector)](./LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/som1ng/c-injector.svg)](https://github.com/som1ng/c-injector/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/som1ng/c-injector.svg)](https://github.com/som1ng/c-injector/issues)
+<div align="center">
+
+# DLLInjector
 
 基于 C++ 的 Windows DLL 注入与 Shellcode 注入工具，支持多种注入技术，便于安全测试、逆向分析与自动化开发。项目包含 GUI 及丰富的注释与源代码结构，适合学习与实际运用。
 
+[![License](https://img.shields.io/github/license/som1ng/DLLInjector)](./LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/som1ng/DLLInjector.svg)](https://github.com/som1ng/DLLInjector/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/som1ng/DLLInjector.svg)](https://github.com/som1ng/DLLInjector/issues)
+
+---
+
+</div>
+
 ## 功能简介
 
-c-injector 主要实现多种主流进程注入方式，包括但不限于：
+**DLLInjector** 主要实现多种主流进程注入方式，包括但不限于：
 
 - **远程线程注入**（CreateRemoteThread）：经典注入技术，支持 DLL 和 Shellcode。
 - **APC 注入**（QueueUserAPC）：将 DLL/Shellcode 挂载到目标进程的线程队列中执行。
@@ -29,7 +36,7 @@ c-injector 主要实现多种主流进程注入方式，包括但不限于：
 ## 项目结构
 
 ```
-c-injector/
+DLLInjector/
 ├── src/              # 主体源码（包含各注入方法/核心逻辑）
 │   ├── methods/      # 不同注入方式实现
 │   ├── utils.cpp     # 工具与辅助函数
@@ -39,23 +46,23 @@ c-injector/
 
 ## 安装与编译
 
-- 环境要求：Windows（建议 Win10+）、g++, clang 或 MSVC（需支持 C++11）
-- 依赖库：Windows API，无需三方库
+- **环境要求**：Windows（建议 Win10+）、g++, clang 或 MSVC（需支持 C++11）
+- **依赖库**：Windows API，无需第三方库
 
 ### 编译示例
 
 ```sh
-git clone https://github.com/som1ng/c-injector.git
-cd c-injector
+git clone https://github.com/som1ng/DLLInjector.git
+cd DLLInjector
 # VS 环境可直接编译 src/main_gui.cpp ，GCC 可用 Makefile（如有）
 # 示例：
-g++ src/main_gui.cpp src/utils.cpp src/methods/*.cpp -o c-injector.exe -lgdi32 -lshlwapi -static
+g++ src/main_gui.cpp src/utils.cpp src/methods/*.cpp -o DLLInjector.exe -lgdi32 -lshlwapi -static
 ```
 
 ## 使用说明
 
-1. 运行示例目标程序（见 dll_test/demo.c）
-2. 启动 c-injector.exe，选取目标进程
+1. 运行示例目标程序（见 `dll_test/demo.c`）
+2. 启动 `DLLInjector.exe`，选取目标进程
 3. 选择注入方式（支持 DLL 文件路径或 Shellcode 直接注入）
 4. 等待“注入成功”提示
 
@@ -66,12 +73,11 @@ g++ src/main_gui.cpp src/utils.cpp src/methods/*.cpp -o c-injector.exe -lgdi32 -
 - `-d <dll>`      待注入 DLL 路径
 - `-s <shellcode>` 直接注入 Shellcode（16进制/文件）
 
-（如主以 GUI 为主请略去命令行说明）
-
 ## 贡献/交流
 
-欢迎 issue 与 PR，或联系 [作者博客](https://www.s0m1ng.xyz/) 交流。
+欢迎提交 Issue 与 PR，或访问 [作者博客](https://www.s0m1ng.xyz/) 进行交流。
 
 ## License
 
-MIT License. 仅供安全学习与研究用途，禁止用于非法用途，风险自负。
+[MIT License](./LICENSE)。仅供安全学习与研究用途，禁止用于非法用途，风险自负。
+
